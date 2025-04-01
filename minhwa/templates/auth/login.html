@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h4 class="my-3 border-bottom pb-2">dhwa | 로그인</h4>
+
+    <form method="POST">
+        {{ form.csrf_token }}
+        
+        <!-- 폼 에러 메시지 표시 -->
+        {% include "form_errors.html" %}
+        
+        <div class="mb-3">
+            <label for="username" class="form-label">사용자 ID</label>
+            <input type="text" class="form-control" name="username" id="username" 
+                   value="{{ form.username.data or '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" class="form-control" name="password" id="password" 
+                   value="{{ form.password.data or '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <!-- 로그인 버튼의 크기를 줄여서 너비를 50%로 설정 -->
+            <button type="submit" class="btn btn-outline-primary w-50 mx-auto d-block ">로그인</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

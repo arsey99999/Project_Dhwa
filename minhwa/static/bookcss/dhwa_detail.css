@@ -1,0 +1,30 @@
+/* 미디어 쿼리: 화면 너비가 768px 이하일 때 적용 */
+@media (max-width: 768px) {
+    .container {
+        text-align: center;  /* 컨테이너 내부 텍스트 중앙 정렬 */
+    }
+
+    .book-detail-img {
+        margin: 0 auto;       /* 이미지 중앙 정렬 */
+        height: auto;         /* 높이를 자동으로 조정 */
+        max-width: 100%;      /* 최대 너비 설정 */
+    }
+
+    .book-detail-title {
+        font-size: 1.8rem;    /* 제목 크기 약간 줄이기 */
+        margin-bottom: 15px;  /* 제목 아래 여백 조정 */
+    }
+
+    .book-detail-info, 
+    .book-detail-description {
+        font-size: 1rem;      /* 텍스트 크기 줄이기 */
+        line-height: 1.5;     /* 줄 간격 조정 */
+        margin-bottom: 20px;  /* 여백 줄이기 */
+    }
+
+    .btn-add-to-cart {
+        display: block;       /* 버튼을 블록으로 표시 */
+        width: 100%;          /* 버튼 너비를 100%로 설정 */
+        margin: 20px auto;    /* 버튼 중앙 정렬 */
+    }
+}

@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('dhwa_list._list') }}">dhwa</a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- 메뉴 항목 -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="d-flex align-items-center ms-auto">
+            <!-- 검색 폼 -->
+            <form class="d-flex me-3" action="{{ url_for('dhwa_list.search') }}" method="get">
+                <input class="form-control me-2" type="search" placeholder="검색" aria-label="Search" name="q" style="max-width: 200px;" value="{{ request.args.get('q', '') }}"> <!-- 검색창 너비 조정 -->
+                
+                <button class="btn btn-outline-success btn-sm" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                      </svg> 검색 </button>
+            </form>
+            <ul class="navbar-nav ms-auto">
+                {% if g.user %}
+                    <!-- 로그인 상태에서 내 정보 및 로그아웃 표시 -->
+                    <li class="nav-item">
+                        {% if g.user.username == 'admin' %}
+                            <a class="nav-link" href="{{ url_for('cart.admin_cart_users') }}">관리자 페이지</a>
+                        {% else %}
+                            <a class="nav-link" href="{{ url_for('mypage.mypage') }}">내 정보</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">
+                            {{ g.user.username }} (로그아웃)
+                        </a>
+                    </li>
+                {% else %}
+                    <!-- 비로그인 상태에서 회원가입 및 로그인 링크 표시 -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.signup') }}">회원가입</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">로그인</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        </div>
+    </div>
+</nav>

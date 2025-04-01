@@ -1,0 +1,87 @@
+/* 카드 스타일 */
+/* 카드 스타일 */
+.book-card {
+    height: 300px; /* 높이를 자동으로 조정 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: whitesmoke; /* 카드 배경색 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    padding: 10px; /* 카드 내부 여백 */
+    
+    width: 65%; /* 카드 폭을 80%로 설정 */
+    max-width: 350px; /* 최대 폭을 400px로 제한 (선택 사항) */
+    margin: 10px auto; /* 카드 중앙 정렬 및 상하 마진 */
+}
+
+/* 이미지 스타일 */
+.book-card-img {
+    width: 100%; /* 이미지가 카드 너비에 맞게 조정 */
+    max-height: 180px; /* 최대 높이를 제한 */
+    object-fit: contain; /* 비율을 유지하며 잘리지 않도록 설정 */
+    display: block;
+}
+
+/* 링크 스타일 */
+.book-card-link {
+    color: black; /* 링크 색상 검정 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+/* 제목 및 텍스트 스타일 */
+.book-card-title {
+    color: black; /* 제목 색상 검정 */
+    font-size: 1.1rem; /* 제목 크기 */
+    font-weight: bold;
+    margin-bottom: 0.5rem; /* 하단 여백 */
+    text-align: center; /* 가운데 정렬 */
+}
+
+.book-card-text {
+    color: black; /* 텍스트 색상 검정 */
+    font-size: 0.9rem; /* 텍스트 크기 */
+    margin: 0; /* 텍스트의 기본 여백 제거 */
+    text-align: center; /* 가운데 정렬 */
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    font-size: 0.9rem; /* 버튼 텍스트 크기 */
+    padding: 0.5rem 1rem; /* 버튼 내부 여백 */
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px; /* 부드러운 버튼 모서리 */
+    margin-top: 0.5rem; /* 상단 여백 */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* 버튼 호버 색상 */
+    border-color: #004085; /* 버튼 호버 테두리 색상 */
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+    .book-card {
+        margin-bottom: 15px;
+    }
+}
+
+/* 작은 화면에서는 2개 열로 나누기 */
+@media (max-width: 768px) {
+    .col {
+        flex: 1 1 calc(50% - 1rem);  /* 2개 열로 나누기 */
+    }
+}
+
+
+/* 카드 호버 효과 */
+.book-card:hover {
+    transform: translateY(-10px); /* 카드가 떠오르는 효과 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);  /* 더 큰 그림자 */
+}

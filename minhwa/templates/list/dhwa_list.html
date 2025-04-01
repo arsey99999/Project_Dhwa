@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3 class="text-center"><strong>꿈같은 동화이야기</strong></h3><br>
+    <h5 class="text-center text-muted">도서목록</h5>
+    {% if dhwa_list.items %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for dhwa in dhwa_list.items %}
+                <div class="col mb-4">
+                    <div class="card book-card">
+                        <a href="{{ url_for('dhwa_list.detail', dhwa_id=dhwa.list_id) }}">
+                            <img src="{{ url_for('static', filename='bookimg/' ~ dhwa.img) }}" class="card-img-top book-card-img" alt="{{ dhwa.subject }}">
+                        </a>
+                        <div class="card-body">
+                            <a href="{{ url_for('dhwa_list.detail', dhwa_id=dhwa.list_id) }}" class="book-card-link">
+                                <h5 class="card-title book-card-title">{{ dhwa.subject }}</h5>
+                                <p class="card-text book-card-text">저자: {{ dhwa.writer }}</p>
+                                <p class="card-text book-card-text">출판사: {{ dhwa.publi }}</p>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- 페이지네이션 부분 -->
+        <div class="d-flex justify-content-center mt-4">
+            <ul class="pagination">
+                {% if dhwa_list.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('dhwa_list._list', page=dhwa_list.prev_num) }}">이전</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">이전</span>
+                    </li>
+                {% endif %}
+
+                {% for page_num in range(1, dhwa_list.pages + 1) %}
+                    <li class="page-item {% if dhwa_list.page == page_num %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('dhwa_list._list', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if dhwa_list.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('dhwa_list._list', page=dhwa_list.next_num) }}">다음</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">다음</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% else %}
+        <p>동화책이 없습니다.</p>
+    {% endif %}
+</div>
+{% endblock %}

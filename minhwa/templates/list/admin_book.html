@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div>
+        
+    
+        <!-- 탭 메뉴 -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link {% if active_tab == 'cart' %}active{% endif %}" 
+                   id="cart-tab" 
+                   href="{{ url_for('cart.admin_cart_users') }}" 
+                   role="tab" 
+                   aria-controls="cart" 
+                   aria-selected="{% if active_tab == 'cart' %}true{% else %}false{% endif %}">
+                   장바구니 관리
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="{{ url_for('auth.select_users') }}" class="link-underline-light">
+                
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" 
+                type="button" role="tab" aria-controls="contact-tab-pane" 
+                aria-selected="false">회원 관리</button>
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link {% if active_tab == 'books' %}active{% endif %}" 
+                   id="books-tab" 
+                   href="{{ url_for('dhwa_list.book', active_tab='books') }}" 
+                   role="tab" 
+                   aria-controls="books" 
+                   aria-selected="{% if active_tab == 'books' %}true{% else %}false{% endif %}">
+                   도서 관리
+                </a>
+            </li>
+        </ul>
+
+        <!-- 탭 내용 -->
+        <div class="tab-content mt-3" id="myTabContent">
+            <!-- 장바구니 관리 탭 -->
+            <div class="tab-pane fade {% if active_tab == 'cart' %}show active{% endif %}" id="cart" role="tabpanel" aria-labelledby="cart-tab">
+                <h2>장바구니 관리</h2>
+                <p>장바구니 기능을 여기에 추가하세요.</p>
+            </div>
+
+            <!-- 회원 관리 탭 -->
+            <div class="tab-pane fade {% if active_tab == 'members' %}show active{% endif %}" id="members" role="tabpanel" aria-labelledby="members-tab">
+                <h2>회원 관리</h2>
+                <p>회원 관리 기능을 여기에 추가하세요.</p>
+            </div>
+
+            <!-- 상품 관리 탭 -->
+            <div class="tab-pane fade {% if active_tab == 'books' %}show active{% endif %}" id="books" role="tabpanel" aria-labelledby="books-tab">
+                <h2>도서 관리</h2>
+                <!-- 검색 폼 -->
+                <form class="d-flex me-3 search-form show_search" action="{{ url_for('dhwa_list.book') }}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="검색(제목,저자,출판사)" aria-label="Search" name="q" value="{{ request.args.get('q', '') }}">
+                    <button class="btn btn-outline-success btn-sm" type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>검색</button>
+                </form>
+
+                <!-- 등록하기 버튼 (오른쪽 정렬) -->
+                <div class="d-flex justify-content-end mb-3 show_btn">
+                    <button class="btn btn-outline-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#addBookForm" aria-expanded="false" aria-controls="addBookForm">
+                        등록하기
+                    </button>
+                </div>
+
+                <!-- 도서 등록 폼 (collapse로 숨겨짐) -->
+                <div class="collapse" id="addBookForm">
+                    <div class="card card-body">
+                        <h3>도서 등록</h3>
+                        <form action="{{ url_for('dhwa_list.add_book') }}" method="POST" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">책 제목</label>
+                                <input type="text" name="subject" id="subject" class="form-control" maxlength="150" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="writer" class="form-label">저자</label>
+                                <input type="text" name="writer" id="writer" class="form-control" maxlength="150" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="publi" class="form-label">출판사</label>
+                                <input type="text" name="publi" id="publi" class="form-control" maxlength="150">
+                            </div>
+                            <div class="mb-3">
+                                <label for="img" class="form-label">이미지 URL</label>
+                                <input type="file" name="img" id="img" class="form-control" maxlength="500">
+                            </div>
+                            <button type="submit" class="btn btn-primary ">등록하기</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 기존 상품 테이블 -->
+                <table class="table">
+                    <thead>
+                        <tr class="text-center table-success">
+                            <th>전체선택<br><input type="checkbox" id="select-all"> </th>
+                            <th>번호</th>
+                            <th>책 제목</th>
+                            <th>저자</th>
+                            <th>출판사</th>
+                            <th>보기</th>
+                            <th>수정</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dhwa in dhwa_list.items %}
+                        <tr class="text-center">
+                            <td><input type="checkbox" class="book-checkbox" data-id="{{ dhwa.list_id }}"></td>
+                            <td>{{ dhwa.list_id }}</td>
+                            <td>{{ dhwa.subject }}</td>
+                            <td>{{ dhwa.writer }}</td>
+                            <td>{{ dhwa.publi }}</td>
+                            <td>
+                                <a href="{{ url_for('dhwa_list.detail', dhwa_id=dhwa.list_id, active_tab='books') }}" class="btn btn-outline-success btn-sm">보기</a>
+                            </td>
+                            <td>
+                                <button class= "btn btn-outline-warning btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#editBookForm{{ dhwa.list_id }}" aria-expanded="false" aria-controls="editBookForm{{ dhwa.list_id }}">
+                                    수정
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">
+                                <div class="collapse" id="editBookForm{{ dhwa.list_id }}">
+                                    <div class="card card-body">
+                                        <h3>도서 수정</h3>
+                                        <form action="{{ url_for('dhwa_list.edit_book', dhwa_id=dhwa.list_id) }}" method="post" enctype="multipart/form-data">
+                                            <div class="mb-3">
+                                                <label for="subject{{ dhwa.list_id }}" class="form-label">책 제목</label>
+                                                <input type="text" name="subject" id="subject{{ dhwa.list_id }}" class="form-control" maxlength="150" value="{{ dhwa.subject }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="writer{{ dhwa.list_id }}" class="form-label">저자</label>
+                                                <input type="text" name="writer" id="writer{{ dhwa.list_id }}" class="form-control" maxlength="150" value="{{ dhwa.writer }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="publi{{ dhwa.list_id }}" class="form-label">출판사</label>
+                                                <input type="text" name="publi" id="publi{{ dhwa.list_id }}" class="form-control" maxlength="150" value="{{ dhwa.publi }}">
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label for="img{{ dhwa.list_id }}" class="form-label">이미지 파일 수정</label>
+                                                <input type="file" name="img" id="img{{ dhwa.list_id }}" class="form-control">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">수정하기</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7">등록된 상품이 없습니다.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- 하단 버튼 영역 -->
+                <div class="d-flex justify-content-between show_search">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">메인 페이지 이동</a> <!-- 쇼핑 더하기 버튼 -->
+                </div>
+
+                <!-- 선택한 항목만 삭제하기 버튼 -->
+                <div class="d-flex justify-content-end mb-3 show_btn">
+                    <button class="btn btn-outline-danger btn-sm" type="button" id="book_delete-selected">선택한 항목만 삭제</button>
+                </div>
+
+                <!-- 선택한 항목을 삭제할 폼 -->
+                <form id="deleteBooksForm" action="{{ url_for('dhwa_list.delete_books') }}" method="POST" style="display: none;">
+                    <input type="hidden" name="ids" id="deleteIds">
+                </form>
+                
+                
+                <!-- 상품 테이블 아래 페이지네이션 -->
+                <div class="d-flex justify-content-center mt-4">
+                    
+                    <ul class="pagination">
+                        {% if dhwa_list.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('dhwa_list.book', page=dhwa_list.prev_num) }}" aria-label="Previous">
+                                <span aria-hidden="true">이전</span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">이전</span>
+                        </li>
+                        {% endif %}
+
+                        {% for page_num in range(1, dhwa_list.pages + 1) %}
+                        <li class="page-item {% if page_num == dhwa_list.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('dhwa_list.book', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                        {% endfor %}
+
+                        {% if dhwa_list.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('dhwa_list.book', page=dhwa_list.next_num) }}" aria-label="Next">
+                                <span aria-hidden="true">다음</span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">다음</span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+    {% endblock %}
+ 

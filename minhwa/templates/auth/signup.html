@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- css 는 나중에 전부 수정하기 / 일단 기능이 작동되는지 부터 확인 -->
+<div class="container">
+    <h4 class="my-3 border-bottom pb-2">dhwa | 회원가입</h4>
+    <form method="post">
+        {{ form.csrf_token }}
+        {% include "form_errors.html" %}
+        <div class="mb-3">
+            <label for="username">사용자 ID</label>
+            <input type="text"  class="form-control" name="username" id="username" 
+                    value="{{ form.username.data or '' }}">
+
+        </div>
+        <div class="mb-3">
+            <label for="password1">비밀번호</label>
+            <input type="password" class="form-control" name="password1" id="password1"
+                    value="{{ form.password1.data or '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="password2">비밀번호 확인</label>
+            <input type="password" class="form-control" name="password2" id="password2"
+                    value="{{ form.password2.data or '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="tell">전화번호</label>
+            <input type="tel" class="form-control" name="tell" id="tell"
+                    value="{{ form.tell.data or '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="email">이메일</label>
+            <input type="email" class="form-control" name="email" id="email"
+                    value="{{ form.email.data or '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="address">주소</label>
+            <input type="text" class="form-control" name="address" id="address"
+                    value="{{ form.address.data or '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="postcode">우편번호</label>
+            <input type="number" class="form-control" name="postcode" id="postcode"
+                    value="{{ form.postcode.data or '' }}">
+        </div>
+
+        <button type="submit" class="btn btn-outline-primary">회원가입하기</button>
+    </form>
+</div>
+{% endblock %}

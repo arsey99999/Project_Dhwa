@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a href="{{ url_for('cart.admin_cart_users') }}" class="link-underline-light">
+        <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" 
+            data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" 
+            aria-selected="true">장바구니 관리</button> 
+        </a>   
+    </li>
+    <li class="nav-item" role="presentation">
+        <a href="{{ url_for('auth.select_users') }}" class="link-underline-light">
+        <button class="nav-link" id="home-tab" data-bs-toggle="tab" 
+            data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" 
+            aria-selected="false">회원 관리</button> 
+        </a>   
+    </li>
+    <li class="nav-item" role="presentation">
+        <a href="{{ url_for('dhwa_list.book') }}" class="link-underline-light">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" 
+            type="button" role="tab" aria-controls="contact-tab-pane" 
+            aria-selected="false">도서 관리</button> 
+        </a>   
+    </li>
+</ul>
+<br>
+<div><br>
+    <table class="table">
+        <thead>
+            <tr class="table-success">
+                <th></th>
+                <th class="text-center"></th> <!-- 가운데 정렬 -->
+                <th class="text-center admin_cart_table">회원목록</th> 
+                
+            </tr>
+        </thead>
+        <tbody>
+{% if dhwa_user %}
+    {% for dhwauser in dhwa_user  %}
+        {% for dhwa in dhwa_cart|sort(attribute="username") %}
+            {% if dhwauser.username == dhwa.username %}
+                <tr>
+                    <td class="text-center admin_cart_table">사용자 아이디 &nbsp;&nbsp;&nbsp;&nbsp; :</td>
+                    <td class="text-center admin_cart_table"></td>
+                    <td class="text-center admin_cart_table"><a href="{{ url_for('cart.admin_cart', adlist_id=dhwauser.id, uname=dhwauser.username) }}">{{ dhwa.username }}</a></td> <!-- 제목 -->
+                </tr>
+            {% break %}
+            {% endif %}    
+        {% endfor %}
+    {% endfor %}    
+{% elif dhwa_cart %}
+    {% for dhwa in dhwa_cart|sort(attribute="username") %}
+        <tr>
+            <td class="text-center admin_cart_table">사용자 아이디 &nbsp;&nbsp;&nbsp;&nbsp; :</td>
+            <td class="text-center admin_cart_table"></td>
+            <td class="text-center admin_cart_table"><a href="{{ url_for('cart.admin_cart', adlist_id=dhwa.id, uname=dhwa.username) }}">{{ dhwa.username }}</a></td> <!-- 제목 -->
+        </tr>
+    {% endfor %}
+{% else %}  
+<tr>
+    <td colspan="7" class="text-center admin_cart_table">검색된 결과가 없습니다.</td> <!-- 데이터가 없을 때 -->
+</tr>
+{% endif %}
+    
+        </tbody>
+    </table>
+    <div>
+        &nbsp;&nbsp;&nbsp;<a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">메인 페이지 이동</a> <!-- 쇼핑 더하기 버튼 -->
+    </div>
+</div>
+
+<!-- 페이지네이션 부분 -->
+<div class="d-flex justify-content-center mt-4">
+    <ul class="pagination">
+        {% if dhwa_cart.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('cart.admin_cart_users', page=dhwa_cart.prev_num) }}">이전</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">이전</span>
+            </li>
+        {% endif %}
+        
+        <!-- 페이지 번호들 -->
+        {% for page_num in range(1, dhwa_cart.pages + 1) %}
+            <li class="page-item {% if page_num == dhwa_cart.page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('cart.admin_cart_users', page=page_num) }}">{{ page_num }}</a>
+            </li>
+        {% endfor %}
+        
+        {% if dhwa_cart.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('cart.admin_cart_users', page=dhwa_cart.next_num) }}">다음</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">다음</span>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-3">
+    <!-- 탭 메뉴 -->
+    <ul class="nav nav-tabs" id="mypageTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link {% if active_tab == 'profile' %}active{% endif %}" id="profile-tab" 
+               href="{{ url_for('mypage.mypage') }}" role="tab" 
+               aria-controls="profile" aria-selected="true">내 정보</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link {% if active_tab == 'cart' %}active{% endif %}" id="cart-tab" 
+               href="{{ url_for('cart.client_cart') }}" role="tab" 
+               aria-controls="cart" aria-selected="false">장바구니</a>
+        </li>
+    </ul>
+
+    <!-- 페이지 제목 -->
+    <h5 id="page-title" class="mt-3" style="font-size: 1.5rem;">{{ '내 정보' if active_tab == 'profile' else '장바구니' }}</h5>
+    
+    <!--수정 버튼과 취소 버튼 누를시 메세지 띄우기-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
+                        {{ message }}
+                    
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- 탭 내용 -->
+    <div class="tab-content" id="mypageTabsContent">
+        <!-- 내 정보 탭 -->
+        <div class="tab-pane fade {% if active_tab == 'profile' %}show active{% endif %}" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <ul class="list-group mt-3">
+                <li class="list-group-item">사용자 ID: {{ user.username }}</li>
+                <li class="list-group-item">이메일: {{ user.email }}</li>
+                <li class="list-group-item">전화번호: {{ user.tell }}</li>
+                <li class="list-group-item">주소: {{ user.address }}</li>
+                <li class="list-group-item">우편번호: {{ user.postcode }}</li>
+            </ul>
+        </div>
+
+        <!-- 장바구니 탭 -->
+        <div class="tab-pane fade {% if active_tab == 'cart' %}show active{% endif %}" id="cart" role="tabpanel" aria-labelledby="cart-tab">
+            <p class="mt-3">장바구니에 담긴 항목이 없습니다.</p>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-end">
+        <a href="{{ url_for('mypage.update_mypage') }}" class="btn btn-outline-success">정보 수정</a>
+        &nbsp;&nbsp;
+        <form method="POST" action="{{ url_for('mypage.delete_mypage') }}">
+            <button type="submit" class="btn btn-outline-danger">회원 탈퇴</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

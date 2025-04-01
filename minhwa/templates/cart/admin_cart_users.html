@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if g.user.username == 'admin' %}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a href="{{ url_for('cart.admin_cart_users') }}" class="link-underline-light">
+        <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" 
+            data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" 
+            aria-selected="true">장바구니 관리</button> 
+        </a>   
+    </li>
+    <li class="nav-item" role="presentation">
+        <a href="{{ url_for('auth.select_users') }}" class="link-underline-light">
+        <button class="nav-link" id="home-tab" data-bs-toggle="tab" 
+            data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" 
+            aria-selected="false">회원 관리</button> 
+        </a>   
+    </li>
+    <li class="nav-item" role="presentation">
+        <a href="{{ url_for('dhwa_list.book') }}" class="link-underline-light">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" 
+            type="button" role="tab" aria-controls="contact-tab-pane" 
+            aria-selected="false">도서 관리</button> 
+        </a>   
+    </li>
+</ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0"></div>
+    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"></div>
+    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0"></div>
+  </div>
+
+
+    <br>
+    <h2>장바구니 관리</h2><br>
+    <!-- 검색 폼 -->
+ 
+    <form class="d-flex me-3 search-form show_search" action="{{ url_for('cart.admin_user_search') }}" method="get">
+        &nbsp;&nbsp;<input class="form-control me-2" type="search" placeholder="유저 검색" aria-label="Search" name="q" value="{{ request.args.get('q', '') }}">
+        <button class="btn btn-outline-success btn-sm" type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg> 검색 
+        </button>
+    </form>
+    
+<div><br>
+    <table class="table">
+        <thead>
+            <tr class="table-success">
+                <th class="text-center"></th> <!-- 가운데 정렬 -->
+                <th class="text-center admin_cart_table">회원목록</th> 
+                
+            </tr>
+        </thead>
+        <tbody>
+        {% if aduser %}
+            {% for adlist in aduser|sort(attribute="username") %}
+                {% for cart in adcart %}
+                    {% if adlist.username == cart.username %}
+                        <tr>
+                            <td class="text-center admin_cart_table">사용자 아이디 &nbsp;&nbsp;&nbsp;&nbsp; :</td> <!-- 항목 번호 -->
+                            <td class="text-center admin_cart_table"><a href="{{ url_for('cart.admin_cart', adlist_id=adlist.id) }}">{{ adlist.username }}</a></td> <!-- 제목 -->
+                        </tr>
+                    {% break %}    
+                    {% endif %}
+                {% endfor %}    
+            {% endfor %}    
+        {% else %}    
+            <tr>
+                <td colspan="7" class="text-center">잘못된 접근입니다.</td> <!-- 데이터가 없을 때 -->
+            </tr>
+            <div class="d-flex justify-content-between">
+                &nbsp;<a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">메인 페이지 이동</a> <!-- 쇼핑 더하기 버튼 -->
+            </div>
+        {% endif %} 
+        </tbody>
+    </table>
+
+    <!-- 하단 버튼 영역 -->
+    <div class="d-flex justify-content-between">
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">메인 페이지 이동</a> <!-- 쇼핑 더하기 버튼 -->
+    </div>
+
+{% else %}
+    <h1 colspan="7" class="text-center">잘못된 접근입니다.</h1>
+    <a href="{{ url_for('main.index') }}" class="btn btn-secondary">돌아가기</a>
+{% endif %}
+</div> 
+
+<!-- 페이지네이션 부분 -->
+<div class="d-flex justify-content-center mt-4">
+    <ul class="pagination">
+        {% if aduser.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('cart.admin_cart_users', page=aduser.prev_num) }}">이전</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">이전</span>
+            </li>
+        {% endif %}
+        
+        <!-- 페이지 번호들 -->
+        {% for page_num in range(1, aduser.pages + 1) %}
+            <li class="page-item {% if page_num == aduser.page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('cart.admin_cart_users', page=page_num) }}">{{ page_num }}</a>
+            </li>
+        {% endfor %}
+        
+        {% if aduser.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('cart.admin_cart_users', page=aduser.next_num) }}">다음</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">다음</span>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}

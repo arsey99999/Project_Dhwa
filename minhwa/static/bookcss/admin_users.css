@@ -1,0 +1,39 @@
+.user_allcheck, .information_form, .display_users, .modal_show{
+    display: none;
+}
+input[type="checkbox"]{
+    width: 30px;
+    height: 30px;
+}
+.container-fluid {
+    border-bottom: 1px solid rgba(4, 70, 39, 0.308);
+    padding-bottom: 10px;
+}
+
+.btn_padding {
+    margin: 0.5%;
+}
+
+.search_css {
+    max-width: 200px;
+}
+
+.show_btn {
+    float: right;
+}
+
+.show_search{
+    float: left;
+}
+
+/* 검색 창 스타일 */
+.search-form input[type="search"] {
+    width: 200px; /* 검색창 너비 축소 */
+    height: 30px; /* 검색창 높이 */
+    font-size: 0.8rem; /* 폰트 크기 축소 */
+    margin-right: 10px; /* 오른쪽 여백 */
+}
+
+.admin_users_table {
+    height: 4vw;
+}

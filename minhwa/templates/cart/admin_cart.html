@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a href="{{ url_for('cart.admin_cart_users') }}" class="link-underline-light">
+        <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" 
+            data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" 
+            aria-selected="true">장바구니 관리</button> 
+        </a>   
+    </li>
+    <li class="nav-item" role="presentation">
+        <a href="{{ url_for('auth.select_users') }}" class="link-underline-light">
+        <button class="nav-link" id="home-tab" data-bs-toggle="tab" 
+            data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" 
+            aria-selected="false">회원 관리</button> 
+        </a>   
+    </li>
+    <li class="nav-item" role="presentation">
+        <a href="{{ url_for('dhwa_list.book') }}" class="link-underline-light">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" 
+            type="button" role="tab" aria-controls="contact-tab-pane" 
+            aria-selected="false">도서 관리</button> 
+        </a>   
+    </li>
+</ul>
+<br>
+<div>
+    {% if uscart %}
+    <h2>{{ uname }} 님의 장바구니</h2><br>
+    <!-- 검색 폼 -->
+    <form class="d-flex me-3" action="{{ url_for('cart.admin_cart_search') }}" method="get"> <!-- 간격 조정을 위해 me-3 추가 -->
+        &nbsp;&nbsp;<input class="form-control me-2" type="search" placeholder="유저, 제목, 작가 검색" aria-label="Search" name="q" style="max-width: 200px;" value="{{ request.args.get('q', '') }}"> <!-- 검색창 너비 조정 -->
+        <button class="btn btn-outline-success btn-sm" type="submit"><!-- 돋보기 아이콘 추가 -->
+            <i class="bi bi-search"></i>검색</button> <!-- 작은 버튼으로 변경 -->
+    </form>
+    <table class="table">
+        <thead>
+            <tr class="table-success admin_cart_table">
+                <th class="text-center admin_cart_table">번호</th> <!-- 가운데 정렬 -->
+                <th class="text-center admin_cart_table">제목</th> 
+                <th class="text-center admin_cart_table">작가</th> 
+                <th class="text-center admin_cart_table">수량</th> 
+                <th class="text-center admin_cart_table">삭제</th> 
+            </tr>
+        </thead>
+        <tbody>
+        {% if uscart %}
+            {% for ucart in uscart %}
+                {% if ucart.username == uname %}
+                    
+                
+                    <tr>
+                        <td class="text-center admin_cart_table">{{ loop.index }}</td> <!-- 항목 번호 -->
+                        <td class="text-center admin_cart_table">{{ ucart.subject }}</td> <!-- 제목 -->
+                        <td class="text-center admin_cart_table">{{ ucart.writer }}</td> <!-- 작가 -->
+                        <td>
+                            <form action="{{ url_for('cart.admin_modify', ucart_id=ucart.id) }}" method="post">
+                                <input type="number" name="ucart_amount" value="{{ ucart.amount }}">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">수정</button>
+                            </form>
+                        </td> <!-- 수량 -->
+                        <td>
+                            <form action="{{ url_for('cart.admin_delete', ucart_id=ucart.id) }}" method="post">
+                                <input type="hidden" name="ucart_id" value="{{ ucart.id }} ">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">삭제</button>
+                            </form>
+                        </td>
+                    </tr>
+                 
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="7" class="text-center admin_cart_table">장바구니에 도서가 없습니다.</td> <!-- 데이터가 없을 때 -->
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <!-- 하단 버튼 영역 -->
+    <div class="d-flex justify-content-between">
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">메인 페이지 이동</a> <!-- 쇼핑 더하기 버튼 -->
+        <div>
+            <form action="{{ url_for('cart.admin_delete_all', uname=uname) }}" method="post">
+                <input type="hidden" name="delall" value="{{ uname }} ">
+                <button type="submit" class="btn btn-outline-danger btn-sm">전체 삭제</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</form> <!-- 전체 삭제 버튼 -->
+        </div>
+    </div>
+</div>
+
+<!-- 페이지네이션 부분 -->
+<div class="d-flex justify-content-center mt-4">
+    <ul class="pagination">
+        {% if aduser.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('cart.admin_cart_users', page=aduser.prev_num) }}">이전</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">이전</span>
+            </li>
+        {% endif %}
+        
+        <!-- 페이지 번호들 -->
+        {% for page_num in range(1, aduser.pages + 1) %}
+            <li class="page-item {% if page_num == aduser.page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('cart.admin_cart_users', page=page_num) }}">{{ page_num }}</a>
+            </li>
+        {% endfor %}
+        
+        {% if aduser.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('cart.admin_cart_users', page=aduser.next_num) }}">다음</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">다음</span>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}

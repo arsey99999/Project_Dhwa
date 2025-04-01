@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header text-center">
+            <h2>회원 탈퇴 완료</h2>
+        </div>
+        <div class="card-body">
+            <!-- 탈퇴 후 알림 메시지 -->
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+            </div>
+
+            <!-- 탈퇴 후 홈페이지로 이동할 수 있는 버튼 -->
+            <div class="d-flex justify-content-start gap-3 mt-3">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">로그인 페이지로 돌아가기</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

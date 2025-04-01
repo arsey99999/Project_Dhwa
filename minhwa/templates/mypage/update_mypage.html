@@ -1,0 +1,52 @@
+<!-- update_mypage.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">정보 수정</h1>
+    
+
+    <form method="POST">
+        {{ form.hidden_tag() }}  <!-- CSRF 보호를 위한 숨겨진 필드 -->
+        <div class="mb-3">
+            <label for="username" class="form-label">사용자 이름</label>
+            <input type="text" class="form-control" name="username" id="username" 
+                   value="{{ form.username.data or '' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <!-- 비밀번호는 값 없이 빈 필드로 표시 -->
+            <input type="password" class="form-control" name="password" id="password" 
+                   placeholder="새로운 비밀번호를 입력하세요" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">이메일</label>
+            <input type="email" class="form-control" name="email" id="email" 
+                   value="{{ form.email.data or '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="tell" class="form-label">전화번호</label>
+            <input type="text" class="form-control" name="tell" id="tell" 
+                   value="{{ form.tell.data or '' }}" >
+        </div>
+
+        <div class="mb-3">
+            <label for="address" class="form-label">주소</label>
+            <input type="text" class="form-control" name="address" id="address" 
+                   value="{{ form.address.data or '' }}" >
+        </div>
+
+        <div class="mb-3">
+            <label for="postcode" class="form-label">우편번호</label>
+            <input type="text" class="form-control" name="postcode" id="postcode" 
+                   value="{{ form.postcode.data or '' }}" >
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-outline-success ms-2">정보 수정</button>
+            <a href="{{ url_for('mypage.cancel_update') }}" class="btn btn-outline-danger ms-2">수정 취소</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

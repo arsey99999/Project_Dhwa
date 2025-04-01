@@ -1,0 +1,93 @@
+/* 기본 설정 */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+/* 컨테이너 스타일 */
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 10px; /* 좌우 패딩 약간 추가 */
+}
+
+.form-label {
+    text-align: left; /* 모든 레이블 텍스트를 왼쪽 정렬 */
+    display: block; /* 블록 요소로 설정 */
+}
+
+/* 테이블 전체 크기 및 비율 조정 */
+
+.table {
+    width: 100%; 
+    table-layout: fixed; 
+    border-collapse: collapse; 
+    font-size: 0.9rem; 
+}
+
+/* 테이블 셀 스타일 */
+
+.table th, .table td {
+    text-align: center; 
+    vertical-align: middle; 
+    padding: 0px; 
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+}
+
+/* 테이블 헤더 스타일 */
+/*
+.table th {
+    background-color: #f8f9fa; 
+    font-weight: bold;
+    font-size: 1rem;
+}*/
+.show_btn {
+    float: right;
+}
+
+.show_search{
+    float: left;
+}
+/* 검색 창 스타일 */
+.search-form input[type="search"] {
+    width: 200px; /* 검색창 너비 축소 */
+    height: 30px; /* 검색창 높이 */
+    font-size: 0.8rem; /* 폰트 크기 축소 */
+    margin-right: 10px; /* 오른쪽 여백 */
+}
+
+/* 버튼 스타일 */
+.btn-success, .btn-primary, .btn-warning, .btn-danger {
+    font-size: 0.75rem; /* 버튼 폰트 크기 축소 */
+    padding: 5px 10px; /* 버튼 패딩 */
+    width: auto; /* 버튼 너비 자동 조정 */
+    height: 30px; /* 버튼 높이 */
+    line-height: 1.2; /* 텍스트 줄 간격 조정 */
+}
+
+/* 페이지네이션 스타일 */
+/*.pagination {
+    margin: 10px 0;
+    text-align: center;
+    font-size: 0.8rem;
+}*/
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.8rem; /* 작은 화면에서 테이블 폰트 크기 축소 */
+    }
+
+    .search-form input[type="search"] {
+        width: 150px; /* 작은 화면에서 검색창 너비 축소 */
+    }
+
+    .btn {
+        font-size: 0.65rem; /* 작은 화면에서 버튼 폰트 크기 축소 */
+        padding: 3px 8px; /* 작은 화면에서 버튼 패딩 축소 */
+    }
+}
