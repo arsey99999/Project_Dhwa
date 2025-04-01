@@ -22,7 +22,7 @@
 ---
 
 ## ER Diagram  
-<img src="README/ER Diagram.png" alt="ER Diagram" width="700"/>
+<img src="README/ER Diagram.png" alt="ER Diagram" width="500"/>
 
 ## Usecase Diagram  
 <img src="README/Usecase Diagram.png" alt="Usecase Diagram" width="700"/>
