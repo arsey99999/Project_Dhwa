@@ -10,6 +10,15 @@
 - 상품페이지, 관리자 도서 관리 페이지 (my role)
 - SQLite 기반 DB + Flask-Migrate
 
+
+## Skill & Tools
+
+## ER Diagram
+
+## Usecase Diagram
+
+## Screen view
+
 ## 실행 방법
 ```bash
 # 가상환경 활성화
