@@ -14,7 +14,7 @@
 ## Skill & Tools
 
 ## ER Diagram
-
+<img src="사용자흐름도(최종).png" alt="FinFit 사용자 흐름도" width="700">
 ## Usecase Diagram
 
 ## Screen view
