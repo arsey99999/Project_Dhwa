@@ -10,7 +10,7 @@
 - 도서 목록 및 검색
 - 장바구니 기능
 - 상품 상세 페이지, 관리자 도서 관리 페이지 (**My Role**)
-- SQLite 기반 DB + Flask-Migrate로 데이터 관리
+- SQLite 기반 DB + Flask-Migrate로 데이터 관리.
 
 ---
 
